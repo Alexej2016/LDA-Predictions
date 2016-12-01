@@ -1,0 +1,69 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww28600\viewh15500\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 README: \
+\
+This folder contains everything needed for the LDA based prediction method on the Madison yelp data set; more specifically it contains a list of .py files as well as two folders: Data_Sets_Madison and\
+Papers. The contents are as follows:\
+\
+Papers: \
+Contains the three most prominent papers by David Blei et al. on LDA:\
+BleiNgJordan2003.pdf, HoffmanBleiBach2010b.pdf and nips01-lda.pdf\
+These describes the math for both the online version as well as the batch version of the code and compares the two. Also included are two more \'91accessible\'92, less technical, introductory papers by Blei:\
+Blei2012.pdf and BleiLafferty2009.pdf\
+Finally, the folder also contains the papers by Monroe et al. outlying the Monroe statistic as well the paper by Jurafsky et al. (as a .html) that outlines it use for review modeling:\
+\
+Data_Sets_Madison:\
+\
+\'97\'97\'97\'97\'97\'97\
+\
+IMPORTANT: As you did not want me to upload any data, it is important that you run the code in order to recreate all the files needed: hereby, proceed as follows:\
+\
+- run Dictionary.py (I included the dictionary.txt file in the folder though, since it takes not much space)\
+- import LDA from the directory it is stored in and in python enter\
+	Y = LDA.setting()\
+	LDA.fit_lda(K,N_Iter,Y) where K is the number of topics you want in the LDA and N_Iter the number of iterations\
+- run the script TrainingTestSet.py by entering in your terminal the command \
+	python TrainingTestSet.py \'91xxxx-xx-xx\'92 where the latter is a date which you want to divide your data set into training and testing cohorts by\
+- then you can run predictor.py (currently it is written for the date 2013-07-16, you might want to change that)\
+\
+\'97\'97\'97\'97\'97\'97\
+\
+Contains all data sets that are necessarily for the LDA analysis:\
+\
+reviews_Madison.json: original Madison review data\
+reviews_Madison.json_extended.json: Madison data which includes the topic loadings for each review as computed by LDA.py\
+reviews_Madison.json_training_xxxx-xx-xx_xxxx-xx-xx.json: this contains the training data set for the prediction; it is derived from reviews_Madison.json_extended (i.e. contains topic loadings) using the TrainingTestSet.py code; in the title the time interval from which all its reviews were obtained is indicated\
+\
+reviews_Madison.json_test_xxxx-xx-xx_xxxx-xx-xx.json: similar as above, but for the test data set\
+dictionary.txt: the dictionary to be used in the LDA as computed by Dictionary.py. Current set to contain 1000 words\
+monroe.csv: the monroe statistics for each word in the dictionary (also computed by Dictionary.py)\
+\
+reviews_cts.npy: a numpy file that contains the bag of words representation of our Madison data (as computed in LDA.py)\
+doc_topic_npy: a numpy file containing the topic loadings for each review in Madison.json as computed in LDA.py\
+topic_word_npy: a numpy file containing the topic distributions over the dictionary for each topic used in LDA.py\
+\
+business_ids_training_xxxx-xx-xx_xxxx-xx-xx.json: a list of all business ids that occur in reviews_Madison.json_training_xxxx-xx-xx_xxxx-xx-xx.json. Computed by TrainingTestSet.py\
+business_profiles_training_xxxx-xx-xx_xxxx-xx-xx.json: a list of all business profiles for reviews in reviews_Madison.json_training_xxxx-xx-xx_xxxx-xx-xx.json. Computed by TrainingTestSet.py\
+costumer_ids_training_xxxx-xx-xx_xxxx-xx-xx.json: a list of all business ids that occur in reviews_Madison.json_training_xxxx-xx-xx_xxxx-xx-xx.json. Computed by TrainingTestSet.py\
+costumer_profiles_training_xxxx-xx-xx_xxxx-xx-xx.json: a list of all costumer profiles for reviews in reviews_Madison.json_training_xxxx-xx-xx_xxxx-xx-xx.json. Computed by TrainingTestSet.py\
+piglets_xxxx-xx-xx_xxxx-xx-xx.json: a file containing the profiles for all costumers selected for evaluating the performance of our algorithm (i.e. the test cohort). Computed by TrainingTestSet.py\
+\
+Finally, the purpose of the .py files are as follows:\
+\
+Dictionary.py: computes a dictionary of 1000 (this can be changed) words which are found in the Madison review set reviews_Madison.py and saves it as  dictionary.txt file. Also computes their Monroe statistics and saves them as monroe.csv\
+\
+LDA.py: uses the review data and the dictionary to compute the LDA. It contains two modules, setting() which computes the bag of words representation of the data (reviews_cts.npy) and fit_lda() which computes topic and document loadings of the LDA,topic_word_npy, doc_topic_npy, as reviews_Madison_extended.json which is the original Madison data but also includes the loadings for each review. \
+\
+TrainingTestSet.py: a python script  that computes training and testing cohorts as they will be used by prediction.py. It is run using the command python TrainingTestSet.py \'91xxxx-xx-xx\'92 where \'91xxxx-xx-xx\'92  is the date used to split reviews_Madison_extended.json into test and training data sets; outputs the business/costumer ids/profiles for both training and test sets as well as the piglet file\
+\
+auxillary.py: contains a few functions used in prediction.py as well as a few functions that can be used to visualize topic and document loadings\
+\
+prediction.py: uses the test and training data sets as well as the piglet data set to predict costumer ratings for restaurants using the LDA loadings and the Jensen-Shannon metric\
+\
+\
+\
+}
